@@ -1,0 +1,35 @@
+CREATE TABLE customers(
+customer_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+fname varchar(100) NOT NULL,
+lname varchar(100) NOT NULL,
+phone varchar(100) NOT NULL,
+email varchar(100) NOT NULL,
+address TEXT DEFAULT ''
+);
+
+CREATE TABLE orders(
+order_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+customer_id INTEGER NOT NULL,
+visitdate TEXT NOT NULL,
+servicetype varchar(100) NOT NULL,
+tabletype varchar(100) NOT NULL DEFAULT '',
+address TEXT DEFAULT '',
+persons INTEGER NOT NULL, 
+orderdate TEXT NOT NULL,
+ordertotal REAL NOT NULL,
+FOREIGN KEY(customer_id) REFERENCES customers(customer_id)
+);
+
+CREATE TABLE orderitems(
+item_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+order_id INTEGER NOT NULL,
+customer_id INTEGER NOT NULL,
+name varchar(200) NOT NULL,
+category varchar(100) NOT NULL,
+type varchar(100) NOT NULL,
+price REAL NOT NULL,
+quantity INTEGER NOT NULL,
+subtotal REAL NOT NULL,
+FOREIGN KEY(order_id) REFERENCES orders(order_id),
+FOREIGN KEY(customer_id) REFERENCES customers(customer_id)
+);
