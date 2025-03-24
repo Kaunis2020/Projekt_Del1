@@ -43,6 +43,38 @@ app.get('/api/employees', (req, res) =>
     });
 });
 
+app.get('/api/allfood', (req, res) =>
+{
+    let allfood = [];
+    let db = new sqlite3.Database(dbpath, sqlite3.OPEN_READONLY, (err) => {
+        db.serialize(function () {
+            db.all("SELECT * FROM vegan", function (err, vegan) {
+                if (err)
+                    res.status(404).json(err.message);
+                else
+                {
+                    vegan.forEach((element) => {
+                        allfood.push(element);
+                    });
+                }
+            });
+            db.all("SELECT * FROM nonvegan", function (err, nonvegan) {
+                if (err)
+                    res.status(404).json(err.message);
+                else
+                {
+                    nonvegan.forEach((element) => {
+                        allfood.push(element);
+                    }); 
+                   res.status(200).json(allfood);
+                }
+            });
+           
+        });
+        db.close();
+    });
+});
+
 // För visning öppnas databasen i read only-läget;
 // ICKE-VEGANSK MAT
 app.get('/api/nonvegan', (req, res) =>
